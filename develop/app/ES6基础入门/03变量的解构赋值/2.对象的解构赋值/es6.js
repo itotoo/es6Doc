@@ -15,4 +15,13 @@ let obj = {
   console.log(p, x, y)
 
 // 赋值
-var {x:x , y = 5} = {x: 1};
+let x;
+({x = 5 } = {x: 1});
+
+// 对象的方法，赋值
+let { log, sin, cos } = Math;
+
+// 数组进行对象属性的解构
+let arr = [1, 2, 3];
+let {0 : first, [arr.length - 1] : last} = arr;
+first // 1
