@@ -1,30 +1,15 @@
 import babelPolyfill from "babel-polyfill";
 import es6Promise from "es6-promise";
 import shim from "es5-shim";
-import fetchDetector from "fetch-detector";
-import fetchIe8 from "fetch-ie8";
-(()=>{
-    var obj = {
-        method: function() {
-            
-        }
-    };
-    obj.__proto__ = {
-        y:"yyy"
-    };
-    console.log(obj );
-})();
 
-(()=>{
-    function objs(){};
-    objs.prototype.addss = function(){
-        console.log('123');
-    };
-    var obj = new objs();
-    Object.setPrototypeOf(obj, {
-        x:1
-    });
-    console.log(obj);
+// Object.setPrototypeOf()（写操作）、
+// Object.getPrototypeOf()（读操作）、
+// Object.create()（生成操作）代替。
+let proto = {};
+let obj = { x: 10 };
+Object.setPrototypeOf(obj, proto);
+proto.y = 20;
+proto.z = 40;
+console.log('setPrototypeOf',obj.x);
 
-    console.log(Object.getPrototypeOf(obj))
-})();
+console.log(Object.getPrototypeOf(obj) === proto)

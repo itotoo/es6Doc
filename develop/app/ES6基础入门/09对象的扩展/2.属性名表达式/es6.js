@@ -1,15 +1,15 @@
 import babelPolyfill from "babel-polyfill";
 import es6Promise from "es6-promise";
 import shim from "es5-shim";
-import fetchDetector from "fetch-detector";
-import fetchIe8 from "fetch-ie8";
-(()=>{
-    let a = "A";
-    let obj = {
-        [a]:123,
-        [a+'B'](){
-            
-        }
-    };
-    console.log(obj);
-})();
+
+
+
+var bool = false;
+let obj = {
+    [foo]: 'abc',
+    [bool+'_']: true,
+    ['h' + 'ello']() {
+      return 'hi';
+    }
+};
+// 属性名表达式与简洁表示法，不能同时使用

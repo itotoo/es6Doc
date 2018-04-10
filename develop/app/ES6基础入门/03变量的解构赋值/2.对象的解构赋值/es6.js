@@ -15,8 +15,8 @@ let obj = {
   console.log(p, x, y)
 
 // 赋值
-let x;
-({x = 5 } = {x: 1});
+let xxx;
+({xxx = 5 } = {xxx: 1});
 
 // 对象的方法，赋值
 let { log, sin, cos } = Math;

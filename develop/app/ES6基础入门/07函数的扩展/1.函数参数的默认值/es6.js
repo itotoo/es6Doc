@@ -1,60 +1,53 @@
 import babelPolyfill from "babel-polyfill";
 import es6Promise from "es6-promise";
 import shim from "es5-shim";
-import fetchDetector from "fetch-detector";
-import fetchIe8 from "fetch-ie8";
-// 基本用法 § ⇧
-(function (params) {
-    function log(x, y = "world"){
-        console.log(x,y)
-    }
-    log('Hello') // Hello World
-    log('Hello', 'China') // Hello China
-    log('Hello', '') // Hello
+// 函数参数的默认值
+// 1.基本用法,参数指定默认值 --------------------------------
+function Point(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+}
+console.log(new Point());
 
-    let x = 99;
-    function foo(p = x + 1) {
-    console.log(p);
-    }
-    foo() // 100
-    x = 1000;
-    foo() // 101
-})();
+// 2.与解构赋值默认值结合使用 --------------------------------
+// 写法一
+function m1({x = 0, y = 0} = {}) {
+    return [x, y];
+}
+// 写法二
+function m2({x, y} = { x: 0, y: 0 }) {
+    return [x, y];
+}
 
-
-// 与解构赋值默认值结合使用 § ⇧
-(function (params) {
-    function fetch(url, { body = '', method = 'GET', headers = {} } = {}) {
-    console.log(method);
-    }
-
-    fetch('http://example.com')
-})();
+// 3.参数默认值的位置 --------------------------------
+function foo2(x = 5, y = 6, z) {
+    console.log(x, y);
+}
+foo2(undefined, null)
+foo2(undefined)
 
 
+// 4.函数的 length 属性 --------------------------------
+var numbers = (function (a, b = 5, c) {}).length // 2
+console.log(`函数的 length ${numbers}`);
 
-// 参数默认值的位置 § ⇧
-(function (params) {
-    function foo2(x = 5, y = 6) {
-        console.log(x, y);
-    }
-    foo2(undefined, null)
-    foo2(undefined)
-})();
-
-
-// 函数的 length 属性 § ⇧
+// 5.作用域 --------------------------------
 (function(){
-    let  number = (function (a, b = 1, c) {}).length // 1
-    console.log('number',number)
-})();
-
-// 作用域 § ⇧
-(function(){
+    // 实际执行的是let x
     var x = 1;
     function f(x, y = x) {
-        console.log(x,y);
+      console.log(x);
+      console.log(y);
     }
     f(2) // 2
+    // *******************
+    var x = 1;
+    function foo(x, y = function() { x = 2; }) {
+        var x = 3;
+        y();
+        console.log(x);
+    }
+    foo() // 3
+    x // 1
 })()
 

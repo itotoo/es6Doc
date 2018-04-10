@@ -1,49 +1,48 @@
 import babelPolyfill from "babel-polyfill";
 import es6Promise from "es6-promise";
 import shim from "es5-shim";
-import fetchDetector from "fetch-detector";
-import fetchIe8 from "fetch-ie8";
 
 
-let f = () => {
-  let m = 1;
-  let n = 2;
-  return g(m + n);
-}
-let g = (...value) => {
-    console.log(value) 
-};
-f();
+// 尾调用（Tail Call）是函数式编程的一个重要概念
 
-(function (params) {
-    let factorial = (n, total = 1) =>{
-        if (n === 1) return total;
-        return factorial(n - 1, n * total);
+// 就是指某个函数的最后一步是返回调用另一个函数,而不是自身
+
+// 我们知道，函数调用会在内存形成一个“调用记录”，又称“调用帧”（call frame），形成一个“调用栈”
+
+// 直接用内层函数的调用帧，取代外层函数的调用帧就可以了。
+
+// 调用帧只有一项，这将大大节省内存，这就是“尾调用优化”的意义。
+
+// ES6 的尾调用优化只在严格模式下开启
+'use strict';
+
+// 1.进行“尾调用优化”，只有不再用到外层函数的内部变量 ---------------------------
+function addOne(a){
+    var one = 1;
+    function inner(b){
+      return b + one;
     }
-    factorial(5) // 120
-})();
+    return inner(a);
+}
+
+// 2.函数调用自身，称为递归。如果尾调用自身，就称为尾递归。 ---------------------------
+function Fibonacci (n , val = 1) {
+    if( n <= 1 ) {return val };
+    return Fibonacci (n - 1,n + val);
+}
+// 1+2+3+4+5+6+7+...+100
+console.log(Fibonacci(1000)) //  Maximum call stack size exceeded
 
 
-(function (params) {
-    // function Fibonacci2 (n , ac1 = 1 , ac2 = 1) {
-    // if( n <= 1 ) {return ac2};
+// 函数式编程有一个概念，叫做柯里化（currying），意思是将多参数的函数转换成单参数的形式。这里也可以使用柯里化。
 
-    // return Fibonacci2 (n - 1, ac2, ac1 + ac2);
-    // }
+// ......
 
-    // var a = Fibonacci2(1475) // 573147844013817200000
-    // // var b = Fibonacci2(1000) // 7.0330367711422765e+208
-    // // var c = Fibonacci2(10000) // Infinity
-
-    // console.log(a);
-    // console.log(b);
-    // console.log(c);
+// 尾递归优化的实现
 
 
-
-})();
-
-(function (params) {
+  
+;(function (params) {
     function tco(f) {
     var value;
     var active = false;
@@ -71,7 +70,7 @@ f();
     }
     });
 
-    console.log(sum(1, 100000000));
+    console.log(sum(1, 1000000000));
 })();
 
 
